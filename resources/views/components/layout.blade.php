@@ -16,14 +16,20 @@
     <meta property="og:url" content="https://chirper.laravel.cloud" />
     @vite('resources/css/app.css', 'resources/js/app.js')
 </head>
-<body>
-<main class="flex-1 container mx-auto px-4 py-8">
-    <div class="card bg-base-100 shadow max-w-xl mx-auto">
-        <div class="card-body">
-            <h1 class="text-3xl font-bold">Welcome to Chirper!</h1>
-            <p class="mt-4 text-base-content/60">This is a simple Laravel application.</p>
-        </div>
+<body class="min-h-screen flex flex-col bg-base-200 font-sans">
+<nav class="navbar bg-base-100">
+    
+    <div class="navbar-start">
+        <a class="btn btn-ghost text-xl" href="/">Chirper</a>
     </div>
+    <div class="navbar-end gap-2">
+        <a class="btn btn-ghost btn-sm" href="#">Login</a>
+        <a class="btn btn-primary btn-sm" href="#">Sign Up</a>
+    </div>
+    
+</nav>
+<main class="flex-1 container mx-auto px-4 py-8">
+    {{ $slot }}
 </main>
 
 <footer class="footer footer-center p-4 bg-base-200 text-base-content">
