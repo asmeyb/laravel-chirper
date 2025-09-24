@@ -1,4 +1,3 @@
-
 <x-layout>
     <x-slot:title>
         Sign In
@@ -8,7 +7,7 @@
         <div class="hero-content flex-col">
             <div class="card w-96 bg-base-100">
                 <div class="card-body">
-                    <h1 class="text-3xl font-bold text-center mb-6">Welcome Back</h1>
+                    <h1 class="mt-1 text-xl font-bold text-center mb-6">Welcome Back</h1>
 
                     <form method="POST" action="/login">
                         @csrf
@@ -17,7 +16,7 @@
                         <label class="floating-label mb-6">
                             <input type="email"
                                    name="email"
-                                   placeholder="[mail@example.com](<mailto:mail@example.com>)"
+                                   placeholder="mail@example.com"
                                    value="{{ old('email') }}"
                                    class="input input-bordered @error('email') input-error @enderror"
                                    required
