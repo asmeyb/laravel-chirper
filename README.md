@@ -1,11 +1,78 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Chirper - Social Media Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel-based social media platform with comprehensive social interaction features including likes, comments, favorites, reposts, and real-time notifications.
+
+## Features
+
+- **User Authentication** - Register, login, and profile management
+- **Chirps (Posts)** - Create, edit, and delete posts
+- **Social Interactions**
+  - Like chirps
+  - Comment on chirps
+  - Favorite chirps for later
+  - Repost chirps to your followers
+- **Search & Discovery** - Search chirps by keywords with pagination
+- **Notifications** - Real-time notifications for likes and comments
+- **User Profiles** - Customizable profiles with profile picture uploads
+
+## Installation
+
+1. Clone the repository
+```bash
+git clone <repository-url>
+cd chirper
+```
+
+2. Install dependencies
+```bash
+composer install
+npm install
+```
+
+3. Set up environment
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+4. Configure your database in `.env` file
+
+5. Run migrations
+```bash
+php artisan migrate
+```
+
+6. Create storage symbolic link (required for profile pictures)
+```bash
+php artisan storage:link
+```
+
+7. Build assets
+```bash
+npm run dev
+```
+
+8. Start the development server
+```bash
+php artisan serve
+```
+
+Visit `http://localhost:8000` to access the application.
+
+## Testing
+
+Run the test suite:
+```bash
+php artisan test
+```
+
+## Technology Stack
+
+- Laravel 12
+- SQLite Database
+- Tailwind CSS with DaisyUI
+- Alpine.js for interactivity
+- Blade templating engine
 
 ## About Laravel
 
