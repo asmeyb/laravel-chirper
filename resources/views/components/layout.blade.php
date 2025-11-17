@@ -68,6 +68,11 @@
         </div>
     </nav>
 
+    <form method="GET" action="{{ route('chirps.search') }}">
+    <input type="text" name="q" placeholder="Search chirps..." value="{{ request('q') }}">
+    <button type="submit">Search</button>
+</form>
+
     <!-- Success Toast -->
     @if (session('success'))
         <div class="toast toast-top toast-center">

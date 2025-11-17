@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Chirp;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class ChirpController extends Controller
 {
@@ -14,8 +16,7 @@ class ChirpController extends Controller
     {
         $chirps = Chirp::with('user')
             ->latest()
-            ->take(50)  // Limit to 50 most recent chirps
-            ->get();
+            ->paginate(10);
 
         return view('home', ['chirps' => $chirps]);
     }
@@ -98,4 +99,16 @@ class ChirpController extends Controller
 
         return redirect('/')->with('success', 'Chirp deleted!');
     }
+
+    public function search(Request $request)
+{
+    $q = $request->input('q');
+
+    $chirps = Chirp::with('user')
+        ->where('message', 'like', "%{$q}%")
+        ->latest()
+        ->paginate(10);
+
+    return view('home', compact('chirps', 'q'));
+}
 }

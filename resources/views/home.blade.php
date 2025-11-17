@@ -53,6 +53,7 @@
                     </div>
                 </div>
             @endforelse
+            {{ $chirps->links() }}
         </div>
     </div>
 </x-layout>
