@@ -12,7 +12,7 @@ class FavoriteController extends Controller
         $user = auth()->user();
         
         // Get all favorited chirps by the user
-        $favoritedChirpIds = $user->favorites()
+        $favoritedChirpIds = \App\Models\Favoritable::where('user_id', $user->id)
             ->where('favoritable_type', Chirp::class)
             ->pluck('favoritable_id');
         

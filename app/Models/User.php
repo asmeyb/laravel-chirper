@@ -60,14 +60,14 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    public function likes(): MorphMany
+    public function likes(): HasMany
     {
-        return $this->morphMany(Likable::class, 'likable');
+        return $this->hasMany(Likable::class);
     }
 
-    public function favorites(): MorphMany
+    public function favorites(): HasMany
     {
-        return $this->morphMany(Favoritable::class, 'favoritable');
+        return $this->hasMany(Favoritable::class);
     }
 
     public function hasLiked(Model $model): bool
