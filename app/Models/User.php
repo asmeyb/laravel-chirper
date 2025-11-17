@@ -4,7 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -22,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_picture_path',
     ];
 
     /**
@@ -50,5 +53,52 @@ class User extends Authenticatable
     public function chirps(): HasMany
     {
         return $this->hasMany(Chirp::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function likes(): MorphMany
+    {
+        return $this->morphMany(Likable::class, 'likable');
+    }
+
+    public function favorites(): MorphMany
+    {
+        return $this->morphMany(Favoritable::class, 'favoritable');
+    }
+
+    public function hasLiked(Model $model): bool
+    {
+        return $model->likes()->where('user_id', $this->id)->exists();
+    }
+
+    public function hasFavorited(Model $model): bool
+    {
+        return $model->favorites()->where('user_id', $this->id)->exists();
+    }
+
+    public function toggleLike(Model $model): void
+    {
+        $like = $model->likes()->where('user_id', $this->id)->first();
+
+        if ($like) {
+            $like->delete();
+        } else {
+            $model->likes()->create(['user_id' => $this->id]);
+        }
+    }
+
+    public function toggleFavorite(Model $model): void
+    {
+        $favorite = $model->favorites()->where('user_id', $this->id)->first();
+
+        if ($favorite) {
+            $favorite->delete();
+        } else {
+            $model->favorites()->create(['user_id' => $this->id]);
+        }
     }
 }

@@ -54,9 +54,46 @@
                     </defs>
                 </svg></a>
         </div>
-        <div class="navbar-end gap-4 px-4">
+        <div class="navbar-end gap-2 px-4">
             @auth
-                <span class="text-sm">{{ auth()->user()->name }}</span>
+                <!-- Profile Link with Avatar -->
+                <a href="{{ route('profile.show') }}" class="btn btn-ghost btn-sm gap-2">
+                    <div class="avatar">
+                        <div class="w-6 h-6 rounded-full">
+                            @if(auth()->user()->profile_picture_path)
+                                <img src="{{ asset('storage/' . auth()->user()->profile_picture_path) }}" alt="{{ auth()->user()->name }}">
+                            @else
+                                <img src="https://avatars.laravel.cloud/{{ urlencode(auth()->user()->email) }}?vibe=ocean" alt="{{ auth()->user()->name }}">
+                            @endif
+                        </div>
+                    </div>
+                    <span class="hidden sm:inline">{{ auth()->user()->name }}</span>
+                </a>
+
+                <!-- Favorites Link -->
+                <a href="{{ route('favorites.index') }}" class="btn btn-ghost btn-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                    </svg>
+                    <span class="hidden sm:inline">Favorites</span>
+                </a>
+
+                <!-- Notifications Link with Badge -->
+                <a href="{{ route('notifications.index') }}" class="btn btn-ghost btn-sm relative">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                    </svg>
+                    @php
+                        $unreadCount = auth()->user()->unreadNotifications->count();
+                    @endphp
+                    @if($unreadCount > 0)
+                        <span class="badge badge-sm badge-error absolute -top-1 -right-1">{{ $unreadCount }}</span>
+                    @endif
+                    <span class="hidden sm:inline">Notifications</span>
+                </a>
+
+                <div class="divider divider-horizontal mx-0"></div>
+
                 <form method="POST" action="/logout" class="inline">
                     @csrf
                     <button type="submit" class="btn btn-ghost btn-sm">Logout</button>
@@ -67,11 +104,6 @@
             @endauth
         </div>
     </nav>
-
-    <form method="GET" action="{{ route('chirps.search') }}">
-    <input type="text" name="q" placeholder="Search chirps..." value="{{ request('q') }}">
-    <button type="submit">Search</button>
-</form>
 
     <!-- Success Toast -->
     @if (session('success'))

@@ -53,6 +53,41 @@
                 <p class="mt-1">
                     {{ $chirp->message }}
                 </p>
+
+                @if($chirp->isRepost && $chirp->originalChirp)
+                    <div class="mt-2 p-3 border border-base-300 rounded-lg">
+                        <p class="text-xs text-base-content/60 mb-1">Reposted from {{ $chirp->originalChirp->user->name }}</p>
+                        <p class="text-sm">{{ $chirp->originalChirp->message }}</p>
+                    </div>
+                @endif
+
+                <!-- Social Interaction Buttons -->
+                @auth
+                    <div class="flex items-center gap-2 mt-3 border-t border-base-300 pt-3">
+                        <x-like-button :chirp="$chirp" />
+                        <x-favorite-button :chirp="$chirp" />
+                        <x-repost-button :chirp="$chirp" />
+                        
+                        <button onclick="toggleComments{{ $chirp->id }}()" class="btn btn-ghost btn-sm gap-1">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                            </svg>
+                            <span>{{ $chirp->comments()->count() }}</span>
+                        </button>
+                    </div>
+
+                    <!-- Comments Section (Initially Hidden) -->
+                    <div id="comments{{ $chirp->id }}" class="hidden">
+                        <x-comments-list :chirp="$chirp" />
+                    </div>
+
+                    <script>
+                        function toggleComments{{ $chirp->id }}() {
+                            const commentsDiv = document.getElementById('comments{{ $chirp->id }}');
+                            commentsDiv.classList.toggle('hidden');
+                        }
+                    </script>
+                @endauth
             </div>
         </div>
     </div>

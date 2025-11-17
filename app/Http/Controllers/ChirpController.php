@@ -101,14 +101,48 @@ class ChirpController extends Controller
     }
 
     public function search(Request $request)
-{
-    $q = $request->input('q');
+    {
+        $q = $request->input('q');
 
-    $chirps = Chirp::with('user')
-        ->where('message', 'like', "%{$q}%")
-        ->latest()
-        ->paginate(10);
+        $chirps = Chirp::with('user')
+            ->where('message', 'like', "%{$q}%")
+            ->latest()
+            ->paginate(10);
 
-    return view('home', compact('chirps', 'q'));
-}
+        return view('home', compact('chirps', 'q'));
+    }
+
+    public function toggleLike(Chirp $chirp)
+    {
+        auth()->user()->toggleLike($chirp);
+
+        return redirect()->back()->with('success', 'Like toggled successfully!');
+    }
+
+    public function toggleFavorite(Chirp $chirp)
+    {
+        auth()->user()->toggleFavorite($chirp);
+
+        return redirect()->back()->with('success', 'Favorite toggled successfully!');
+    }
+
+    public function repost(Chirp $chirp)
+    {
+        // Check if user already reposted this chirp
+        $existingRepost = Chirp::where('user_id', auth()->id())
+            ->where('original_chirp_id', $chirp->id)
+            ->exists();
+
+        if ($existingRepost) {
+            return redirect()->back()->with('error', 'You have already reposted this chirp.');
+        }
+
+        // Create new chirp with original_chirp_id set
+        auth()->user()->chirps()->create([
+            'message' => $chirp->message,
+            'original_chirp_id' => $chirp->id,
+        ]);
+
+        return redirect()->back()->with('success', 'Chirp reposted successfully!');
+    }
 }
